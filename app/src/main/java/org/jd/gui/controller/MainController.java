@@ -248,20 +248,20 @@ public class MainController implements API {
 
             if (currentPanel instanceof SourcesSavable) {
                 SourcesSavable sourcesSavable = (SourcesSavable)currentPanel;
-                JFileChooser chooser = new JFileChooser();
                 JFrame mainFrame = mainView.getMainFrame();
 
+                SaveAllSourcesOptions options = new SaveAllSourcesOptionsView().show(mainFrame);
+                if (options == null) {
+                    return;
+                }
+
+                JFileChooser chooser = new JFileChooser();
                 chooser.setSelectedFile(new File(configuration.getRecentSaveDirectory(), sourcesSavable.getSourceFileName()));
 
                 if (chooser.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = chooser.getSelectedFile();
 
                     configuration.setRecentSaveDirectory(chooser.getCurrentDirectory());
-
-                    SaveAllSourcesOptions options = new SaveAllSourcesOptionsView().show(mainFrame);
-                    if (options == null) {
-                        return;
-                    }
 
                     if (selectedFile.exists()) {
                         String title = I18n.get("confirm.title");
