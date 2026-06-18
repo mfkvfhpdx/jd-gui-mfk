@@ -10,6 +10,8 @@ package org.jd.gui.controller;
 import org.jd.gui.api.API;
 import org.jd.gui.api.feature.SourcesSavable;
 import org.jd.gui.util.exception.ExceptionUtil;
+import org.jd.gui.util.save.PreferencesOverlayApi;
+import org.jd.gui.util.save.SaveAllSourcesOptions;
 import org.jd.gui.view.SaveAllSourcesView;
 
 import javax.swing.*;
@@ -33,11 +35,19 @@ public class SaveAllSourcesController implements SourcesSavable.Controller, Sour
     }
 
     public void show(ScheduledExecutorService executor, SourcesSavable savable, File file) {
+        show(executor, savable, file, null);
+    }
+
+    public void show(ScheduledExecutorService executor, SourcesSavable savable, File file, SaveAllSourcesOptions options) {
+        API saveApi = (options != null)
+            ? new PreferencesOverlayApi(api, options.applyTo(api.getPreferences()))
+            : api;
+
         // Show
         this.saveAllSourcesView.show(file);
         // Execute background task
         executor.execute(() -> {
-            int fileCount = savable.getFileCount();
+            int fileCount = savable.getFileCount(saveApi);
 
             saveAllSourcesView.updateProgressBar(0);
             saveAllSourcesView.setMaxValue(fileCount);
@@ -58,7 +68,7 @@ public class SaveAllSourcesController implements SourcesSavable.Controller, Sour
                 Files.deleteIfExists(path);
 
                 try {
-                    savable.save(api, this, this, path);
+                    savable.save(saveApi, this, this, path);
                 } catch (Exception e) {
                     assert ExceptionUtil.printStackTrace(e);
                     saveAllSourcesView.showActionFailedDialog();

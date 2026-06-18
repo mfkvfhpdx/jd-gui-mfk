@@ -99,8 +99,13 @@ public class ContainerPanelFactoryProvider implements PanelFactory {
 
         @Override
         public int getFileCount() {
-            SourceSaver saver = api.getSourceSaver(entry);
-            return (saver != null) ? saver.getFileCount(api, entry) : 0;
+            return getFileCount(api);
+        }
+
+        @Override
+        public int getFileCount(API requestApi) {
+            SourceSaver saver = requestApi.getSourceSaver(entry);
+            return (saver != null) ? saver.getFileCount(requestApi, entry) : 0;
         }
 
         @Override

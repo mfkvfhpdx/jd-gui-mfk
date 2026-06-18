@@ -13,8 +13,8 @@
 ### 基本语法
 
 ```bash
-java -jar jd-gui.jar --save-all-sources [--no-metadata] <输入文件> [输出文件]
-java -jar jd-gui.jar -s [--no-metadata] <输入文件> [输出文件]
+java -jar jd-gui.jar --save-all-sources [options] <输入文件> [输出文件]
+java -jar jd-gui.jar -s [options] <输入文件> [输出文件]
 ```
 
 | 参数 | 说明 |
@@ -22,7 +22,10 @@ java -jar jd-gui.jar -s [--no-metadata] <输入文件> [输出文件]
 | `--save-all-sources` / `-s` | 启用无界面保存全部源码模式 |
 | `<输入文件>` | 待反编译的 JAR、WAR、EAR、ZIP、KAR、AAR、JMOD 或目录 |
 | `[输出文件]` | 可选，输出 ZIP 路径；省略时默认为 `<输入文件>.src.zip` |
-| `--no-metadata` | 可选，**不写入**反编译元数据注释（见下文）；默认会写入 |
+| `--no-metadata` | 可选，不写入文件末尾元数据块（Location、JD-Core 版本等） |
+| `--no-line-numbers` | 可选，不写入行首 `/*    */`、`/* 22 */` 等行号注释 |
+| `--no-comments` | 可选，等同于 `--no-metadata --no-line-numbers`（推荐） |
+| `--keep-nested-archives` | 可选，嵌套 jar/zip 原样复制，不反编译为 `.src.zip` |
 | `-h` / `--help` | 显示帮助信息 |
 
 ### 示例
@@ -34,8 +37,20 @@ java -jar jd-gui.jar --save-all-sources app.jar
 # 指定输出路径
 java -jar jd-gui.jar -s app.jar output.src.zip
 
-# 不写入反编译元数据注释
-java -jar jd-gui.jar -s --no-metadata app.jar clean-output.src.zip
+# 不写入任何反编译注释（推荐）
+java -jar jd-gui.jar -s --no-comments app.jar clean-output.src.zip
+
+# 仅去掉文件末尾元数据块
+java -jar jd-gui.jar -s --no-metadata app.jar output.src.zip
+
+# 仅去掉行首 /*    */、/* 22 */ 注释
+java -jar jd-gui.jar -s --no-line-numbers app.jar output.src.zip
+
+# 嵌套 jar 原样保留（如 Spring Boot 的 BOOT-INF/lib/*.jar）
+java -jar jd-gui.jar -s --keep-nested-archives app.jar output.src.zip
+
+# 组合使用
+java -jar jd-gui.jar -s --no-comments --keep-nested-archives app.jar output.src.zip
 ```
 
 成功时终端输出类似：
@@ -72,9 +87,18 @@ SaveAllSourcesUtil.save(
 );
 ```
 
-### 屏蔽反编译元数据注释
+### 屏蔽反编译注释
 
-默认情况下，每个导出的 `.java` 文件末尾会附加如下块注释：
+JD-GUI 默认会写入两类注释：
+
+**1. 行首行号注释**（由 `writeLineNumbers` 控制）：
+
+```java
+/*    */ package com.example;
+/* 22 */     System.out.println("hello");
+```
+
+**2. 文件末尾元数据块**（由 `writeMetadata` 控制）：
 
 ```java
 /* Location:              C:\path\to\app.jar
@@ -83,16 +107,28 @@ SaveAllSourcesUtil.save(
  */
 ```
 
-使用 `omitMetadata(true)` 可去掉上述注释：
+去掉全部注释（推荐）：
 
 ```java
-import org.jd.gui.util.save.SaveAllSourcesOptions;
-import org.jd.gui.util.save.SaveAllSourcesUtil;
-
 SaveAllSourcesOptions options = SaveAllSourcesOptions.defaults()
-    .omitMetadata(true);
+    .omitComments(true);
 
 SaveAllSourcesUtil.save(new File("app.jar"), new File("output.src.zip"), options);
+```
+
+也可分别控制：
+
+```java
+SaveAllSourcesOptions.defaults()
+    .omitLineNumbers(true)   // 去掉 /*    */、/* 22 */
+    .omitMetadata(true);     // 去掉文件末尾元数据块
+```
+
+保留嵌套 jar（不反编译 `BOOT-INF/lib/*.jar` 等）：
+
+```java
+SaveAllSourcesOptions.defaults()
+    .keepNestedArchives(true);
 ```
 
 ### 带进度回调
@@ -127,6 +163,7 @@ SaveAllSourcesUtil.save(new File("app.jar"), new File("output.src.zip"), prefere
 |----|--------|------|
 | `ClassFileSaverPreferences.writeMetadata` | `true` | 是否写入 Location / 编译器版本 / JD-Core 版本注释 |
 | `ClassFileSaverPreferences.writeLineNumbers` | `true` | 是否在源码中写入行号注释 |
+| `ClassFileSaverPreferences.keepNestedArchives` | `false` | 是否将嵌套 jar/zip 原样复制 |
 | `ClassFileDecompilerPreferences.realignLineNumbers` | `true` | 是否重新对齐行号 |
 | `ClassFileDecompilerPreferences.escapeUnicodeCharacters` | `false` | 是否转义 Unicode 字符 |
 
@@ -149,6 +186,18 @@ SaveAllSourcesUtil.save(new File("app.jar"), new File("output.src.zip"), prefere
 - `.class` 文件被替换为对应的 `.java` 反编译源码
 - 非 class 资源文件（如 `META-INF/*`、配置文件等）会原样复制
 - 内部类（`Foo$Bar.class`）会合并到外部类对应的 `.java` 中，不单独生成文件
+
+## 图形界面用法
+
+菜单 **文件 → 保存全部源码** 时，选择输出文件后会弹出选项对话框，包含三个可选项（默认均未勾选，保持原有行为）：
+
+| 选项 | 对应命令行参数 |
+|------|----------------|
+| 不写入文件末尾元数据注释 | `--no-metadata` |
+| 不写入行首反编译注释 | `--no-line-numbers` |
+| 嵌套 jar/zip 原样保留 | `--keep-nested-archives` |
+
+勾选后点击确定即开始导出。
 
 ## 与图形界面的关系
 
@@ -174,13 +223,17 @@ app/target/jd-gui-1.6.6.jar
 
 ## 常见问题
 
-**Q: `--no-metadata` 和 GUI 首选项里的「写入元数据」有什么关系？**
+**Q: `--no-metadata` 和 `--no-line-numbers` 有什么区别？**
 
-A: 效果相同。`--no-metadata` 等价于将 `ClassFileSaverPreferences.writeMetadata` 设为 `false`。命令行未指定时，会读取 `jd-gui.cfg` 中的配置；API 默认使用配置文件，可通过 `SaveAllSourcesOptions` 或自定义 Map 覆盖。
+A: `--no-metadata` 只去掉文件末尾的 Location / JD-Core 元数据块；`--no-line-numbers` 去掉每行前面的 `/*    */`、`/* 22 */`。你看到的行首注释需要 `--no-line-numbers` 或 `--no-comments`。
 
-**Q: 默认会写入哪些注释？**
+**Q: `--keep-nested-archives` 有什么效果？**
 
-A: 仅元数据块注释（Location、Java compiler version、JD-Core Version）。行号注释由 `writeLineNumbers` 控制，默认开启，与 `--no-metadata` 无关。
+A: 默认会把 `BOOT-INF/lib/foo.jar` 反编译成 `foo.jar.src.zip`。开启后改为原样复制 `foo.jar` 二进制文件，大幅加快 Spring Boot fat jar 的导出速度。
+
+**Q: 推荐用哪个参数？**
+
+A: 若要干净源码，用 `--no-comments`（同时关闭上述两种注释）。
 
 **Q: 能否在 Maven 项目中依赖此工具类？**
 

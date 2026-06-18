@@ -99,7 +99,10 @@ public class App {
 
     protected static void runSaveAllSources(SaveAllSourcesCommand command) {
         try {
-            SaveAllSourcesOptions options = SaveAllSourcesOptions.defaults().omitMetadata(command.omitMetadata);
+            SaveAllSourcesOptions options = SaveAllSourcesOptions.defaults()
+                .omitMetadata(command.omitMetadata)
+                .omitLineNumbers(command.omitLineNumbers)
+                .keepNestedArchives(command.keepNestedArchives);
             SaveAllSourcesUtil.Result result = SaveAllSourcesUtil.save(command.inputFile, command.outputFile, options);
             System.out.println(I18n.get("saveAllSources.success", result.getOutputFile().getAbsolutePath(), result.getFileCount()));
         } catch (Exception e) {
@@ -130,6 +133,22 @@ public class App {
                         index++;
                         continue;
                     }
+                    if ("--no-line-numbers".equals(args[index])) {
+                        command.omitLineNumbers = true;
+                        index++;
+                        continue;
+                    }
+                    if ("--no-comments".equals(args[index])) {
+                        command.omitMetadata = true;
+                        command.omitLineNumbers = true;
+                        index++;
+                        continue;
+                    }
+                    if ("--keep-nested-archives".equals(args[index])) {
+                        command.keepNestedArchives = true;
+                        index++;
+                        continue;
+                    }
                     System.err.println(I18n.get("saveAllSources.unknownOption", args[index]));
                     System.exit(1);
                 }
@@ -156,6 +175,8 @@ public class App {
     protected static class SaveAllSourcesCommand {
         protected boolean help;
         protected boolean omitMetadata;
+        protected boolean omitLineNumbers;
+        protected boolean keepNestedArchives;
         protected File inputFile;
         protected File outputFile;
     }

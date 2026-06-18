@@ -16,6 +16,10 @@ public interface SourcesSavable {
 
     int getFileCount();
 
+    default int getFileCount(API api) {
+        return getFileCount();
+    }
+
     void save(API api, Controller controller, Listener listener, Path path);
 
     interface Controller {

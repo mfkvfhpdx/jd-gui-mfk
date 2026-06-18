@@ -32,6 +32,8 @@ import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.net.UriUtil;
 import org.jd.gui.util.swing.SwingUtil;
 import org.jd.gui.view.MainView;
+import org.jd.gui.view.SaveAllSourcesOptionsView;
+import org.jd.gui.util.save.SaveAllSourcesOptions;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -256,15 +258,20 @@ public class MainController implements API {
 
                     configuration.setRecentSaveDirectory(chooser.getCurrentDirectory());
 
+                    SaveAllSourcesOptions options = new SaveAllSourcesOptionsView().show(mainFrame);
+                    if (options == null) {
+                        return;
+                    }
+
                     if (selectedFile.exists()) {
                         String title = I18n.get("confirm.title");
                         String message = I18n.get("confirm.replaceFile", selectedFile.getAbsolutePath());
 
                         if (JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                            saveAllSourcesController.show(executor, sourcesSavable, selectedFile);
+                            saveAllSourcesController.show(executor, sourcesSavable, selectedFile, options);
                         }
                     } else {
-                        saveAllSourcesController.show(executor, sourcesSavable, selectedFile);
+                        saveAllSourcesController.show(executor, sourcesSavable, selectedFile, options);
                     }
                 }
             }
