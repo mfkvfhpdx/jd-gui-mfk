@@ -7,6 +7,7 @@
 
 package org.jd.gui.view;
 
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.swing.SwingUtil;
 
@@ -28,7 +29,7 @@ public class AboutView {
     public AboutView(JFrame mainFrame) {
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            aboutDialog = new JDialog(mainFrame, "About Java Decompiler", false);
+            aboutDialog = new JDialog(mainFrame, I18n.get("dialog.about"), false);
             aboutDialog.setResizable(false);
 
             JPanel panel = new JPanel();
@@ -51,7 +52,7 @@ public class AboutView {
             subpanel.add(subvbox, BorderLayout.EAST);
             Box hbox = Box.createHorizontalBox();
             subvbox.add(hbox);
-            JLabel mainLabel = new JLabel("Java Decompiler");
+            JLabel mainLabel = new JLabel(I18n.get("about.javaDecompiler"));
             mainLabel.setFont(UIManager.getFont("Label.font").deriveFont(Font.BOLD, 14));
             hbox.add(mainLabel);
             hbox.add(Box.createHorizontalGlue());
@@ -90,9 +91,9 @@ public class AboutView {
             }
 
             subsubpanel.add(new JLabel("JD-GUI"));
-            subsubpanel.add(new JLabel("version " + jdGuiVersion));
+            subsubpanel.add(new JLabel(I18n.get("about.version", jdGuiVersion)));
             subsubpanel.add(new JLabel("JD-Core"));
-            subsubpanel.add(new JLabel("version " + jdCoreVersion));
+            subsubpanel.add(new JLabel(I18n.get("about.version", jdCoreVersion)));
 
             hbox.add(Box.createHorizontalGlue());
 
@@ -106,7 +107,7 @@ public class AboutView {
             hbox = Box.createHorizontalBox();
             panel.add(hbox, BorderLayout.SOUTH);
             hbox.add(Box.createHorizontalGlue());
-            aboutOkButton = new JButton("    Ok    ");
+            aboutOkButton = new JButton(I18n.get("button.ok"));
             Action aboutOkActionListener = new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent actionEvent) { aboutDialog.setVisible(false); }
             };

@@ -9,6 +9,7 @@ package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.service.platform.PlatformService;
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.I18n;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,14 +26,14 @@ public class UISingleInstancePreferencesProvider extends JPanel implements Prefe
     public UISingleInstancePreferencesProvider() {
         super(new GridLayout(0,1));
 
-        singleInstanceTabsCheckBox = new JCheckBox("Single instance");
+        singleInstanceTabsCheckBox = new JCheckBox(I18n.get("prefs.singleInstance"));
 
         add(singleInstanceTabsCheckBox);
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "User Interface"; }
-    @Override public String getPreferencesPanelTitle() { return "Main window"; }
+    @Override public String getPreferencesGroupTitle() { return I18n.get("prefs.ui"); }
+    @Override public String getPreferencesPanelTitle() { return I18n.get("prefs.mainWindow"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override public void init(Color errorBackgroundColor) {}

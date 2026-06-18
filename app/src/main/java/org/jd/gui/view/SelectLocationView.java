@@ -14,6 +14,7 @@ import org.jd.gui.api.feature.UriGettable;
 import org.jd.gui.api.model.Container;
 import org.jd.gui.model.container.DelegatingFilterContainer;
 import org.jd.gui.spi.TreeNodeFactory;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.swing.SwingUtil;
 import org.jd.gui.view.component.Tree;
 import org.jd.gui.view.renderer.TreeNodeRenderer;
@@ -155,7 +156,7 @@ public class SelectLocationView<T extends DefaultMutableTreeNode & ContainerEntr
                 ps.height = 50;
             selectLocationTree.setPreferredSize(ps);
 
-            selectLocationLabel.setText("" + locationCount + " locations:");
+            selectLocationLabel.setText(I18n.get("locations.count", locationCount));
 
             selectLocationDialog.pack();
             selectLocationDialog.setLocation(location);

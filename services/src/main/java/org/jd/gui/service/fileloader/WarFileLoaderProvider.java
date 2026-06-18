@@ -9,13 +9,15 @@ package org.jd.gui.service.fileloader;
 
 import org.jd.gui.api.API;
 
+import org.jd.gui.util.I18n;
+
 import java.io.File;
 
 public class WarFileLoaderProvider extends ZipFileLoaderProvider {
     protected static final String[] EXTENSIONS = { "war" };
 
     @Override public String[] getExtensions() { return EXTENSIONS; }
-    @Override public String getDescription() { return "Web application archive files (*.war)"; }
+    @Override public String getDescription() { return I18n.get("fileLoader.war"); }
 
     @Override
     public boolean accept(API api, File file) {

@@ -9,6 +9,7 @@ package org.jd.gui.view;
 
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.swing.SwingUtil;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
         this.panels = panels;
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            preferencesDialog = new JDialog(mainFrame, "Preferences", false);
+            preferencesDialog = new JDialog(mainFrame, I18n.get("dialog.preferences"), false);
 
             JPanel panel = new JPanel();
             panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -105,7 +106,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
             // Buttons "Ok" and "Cancel"
             Box hbox = Box.createHorizontalBox();
             hbox.add(Box.createHorizontalGlue());
-            preferencesOkButton.setText("   Ok   ");
+            preferencesOkButton.setText(I18n.get("button.ok"));
             preferencesOkButton.addActionListener(e -> {
                 for (PreferencesPanel pp : panels) {
                     pp.savePreferences(preferences);
@@ -115,7 +116,7 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
             });
             hbox.add(preferencesOkButton);
             hbox.add(Box.createHorizontalStrut(5));
-            JButton preferencesCancelButton = new JButton("Cancel");
+            JButton preferencesCancelButton = new JButton(I18n.get("button.cancel"));
             Action preferencesCancelActionListener = new AbstractAction() {
                 public void actionPerformed(ActionEvent actionEvent) { preferencesDialog.setVisible(false); }
             };

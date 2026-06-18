@@ -13,6 +13,7 @@ import org.jd.gui.api.feature.*;
 import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.model.history.History;
 import org.jd.gui.service.platform.PlatformService;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.view.component.IconButton;
 import org.jd.gui.view.component.panel.MainTabbedPanel;
@@ -42,7 +43,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
     protected History history;
     protected Consumer<File> openFilesCallback;
     protected JFrame mainFrame;
-    protected JMenu recentFiles = new JMenu("Recent Files");
+    protected JMenu recentFiles = new JMenu(I18n.get("menu.recentFiles"));
     protected Action closeAction;
     protected Action openTypeAction;
     protected Action backwardAction;
@@ -87,16 +88,16 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
         this.openFilesCallback = openFilesCallback;
         // Build GUI
         invokeLater(() -> {
-            mainFrame = new JFrame("Java Decompiler");
+            mainFrame = new JFrame(I18n.get("app.title"));
             mainFrame.setIconImages(Arrays.asList(getImage("/org/jd/gui/images/jd_icon_32.png"), getImage("/org/jd/gui/images/jd_icon_64.png"), getImage("/org/jd/gui/images/jd_icon_128.png")));
             mainFrame.setMinimumSize(new Dimension(Constants.MINIMAL_WIDTH, Constants.MINIMAL_HEIGHT));
             mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
             // Find panel //
-            Action findNextAction = newAction("Next", newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener);
+            Action findNextAction = newAction(I18n.get("action.next"), newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener);
             findPanel = Box.createHorizontalBox();
             findPanel.setVisible(false);
-            findPanel.add(new JLabel("Find: "));
+            findPanel.add(new JLabel(I18n.get("find.label")));
             findComboBox = new JComboBox();
             findComboBox.setEditable(true);
             JComponent editorComponent = (JComponent)findComboBox.getEditor().getEditorComponent();
@@ -140,17 +141,17 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             toolBar.setFloatable(false);
             toolBar.setRollover(true);
 
-            IconButton findNextButton = new IconButton("Next", newAction(newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener));
+            IconButton findNextButton = new IconButton(I18n.get("action.next"), newAction(newImageIcon("/org/jd/gui/images/next_nav.png"), true, findNextActionListener));
             toolBar.add(findNextButton);
 
             toolBar.add(Box.createHorizontalStrut(5));
 
-            IconButton findPreviousButton = new IconButton("Previous", newAction(newImageIcon("/org/jd/gui/images/prev_nav.png"), true, findPreviousActionListener));
+            IconButton findPreviousButton = new IconButton(I18n.get("action.previous"), newAction(newImageIcon("/org/jd/gui/images/prev_nav.png"), true, findPreviousActionListener));
             toolBar.add(findPreviousButton);
 
             findPanel.add(toolBar);
             findCaseSensitive = new JCheckBox();
-            findCaseSensitive.setAction(newAction("Case sensitive", true, findCaseSensitiveActionListener));
+            findCaseSensitive.setAction(newAction(I18n.get("action.caseSensitive"), true, findCaseSensitiveActionListener));
             findPanel.add(findCaseSensitive);
             findPanel.add(Box.createHorizontalGlue());
 
@@ -172,31 +173,31 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
 
             // Actions //
             boolean browser = Desktop.isDesktopSupported() ? Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) : false;
-            Action openAction = newAction("Open File...", newImageIcon("/org/jd/gui/images/open.png"), true, "Open a file", openActionListener);
-            closeAction = newAction("Close", false, closeActionListener);
-            Action saveAction = newAction("Save", newImageIcon("/org/jd/gui/images/save.png"), false, saveActionListener);
-            Action saveAllSourcesAction = newAction("Save All Sources", newImageIcon("/org/jd/gui/images/save_all.png"), false, saveAllSourcesActionListener);
-            Action exitAction = newAction("Exit", true, "Quit this program", exitActionListener);
-            Action copyAction = newAction("Copy", newImageIcon("/org/jd/gui/images/copy.png"), false, copyActionListener);
-            Action pasteAction = newAction("Paste Log", newImageIcon("/org/jd/gui/images/paste.png"), true, pasteActionListener);
-            Action selectAllAction = newAction("Select all", false, selectAllActionListener);
-            Action findAction = newAction("Find...", false, findActionListener);
-            openTypeAction = newAction("Open Type...", newImageIcon("/org/jd/gui/images/open_type.png"), false, openTypeActionListener);
-            Action openTypeHierarchyAction = newAction("Open Type Hierarchy...", false, openTypeHierarchyActionListener);
-            Action goToAction = newAction("Go to Line...", false, goToActionListener);
-            backwardAction = newAction("Back", newImageIcon("/org/jd/gui/images/backward_nav.png"), false, backwardActionListener);
-            forwardAction = newAction("Forward", newImageIcon("/org/jd/gui/images/forward_nav.png"), false, forwardActionListener);
-            Action searchAction = newAction("Search...", newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
-            Action jdWebSiteAction = newAction("JD Web site", browser, "Open JD Web site", jdWebSiteActionListener);
-            Action jdGuiIssuesActionAction = newAction("JD-GUI issues", browser, "Open JD-GUI issues page", jdGuiIssuesActionListener);
-            Action jdCoreIssuesActionAction = newAction("JD-Core issues", browser, "Open JD-Core issues page", jdCoreIssuesActionListener);
-            Action preferencesAction = newAction("Preferences...", newImageIcon("/org/jd/gui/images/preferences.png"), true, "Open the preferences panel", preferencesActionListener);
-            Action aboutAction = newAction("About...", true, "About JD-GUI", aboutActionListener);
+            Action openAction = newAction(I18n.get("action.openFile"), newImageIcon("/org/jd/gui/images/open.png"), true, I18n.get("action.openFile.tip"), openActionListener);
+            closeAction = newAction(I18n.get("action.close"), false, closeActionListener);
+            Action saveAction = newAction(I18n.get("action.save"), newImageIcon("/org/jd/gui/images/save.png"), false, saveActionListener);
+            Action saveAllSourcesAction = newAction(I18n.get("action.saveAllSources"), newImageIcon("/org/jd/gui/images/save_all.png"), false, saveAllSourcesActionListener);
+            Action exitAction = newAction(I18n.get("action.exit"), true, I18n.get("action.exit.tip"), exitActionListener);
+            Action copyAction = newAction(I18n.get("action.copy"), newImageIcon("/org/jd/gui/images/copy.png"), false, copyActionListener);
+            Action pasteAction = newAction(I18n.get("action.pasteLog"), newImageIcon("/org/jd/gui/images/paste.png"), true, pasteActionListener);
+            Action selectAllAction = newAction(I18n.get("action.selectAll"), false, selectAllActionListener);
+            Action findAction = newAction(I18n.get("action.find"), false, findActionListener);
+            openTypeAction = newAction(I18n.get("action.openType"), newImageIcon("/org/jd/gui/images/open_type.png"), false, openTypeActionListener);
+            Action openTypeHierarchyAction = newAction(I18n.get("action.openTypeHierarchy"), false, openTypeHierarchyActionListener);
+            Action goToAction = newAction(I18n.get("action.goToLine"), false, goToActionListener);
+            backwardAction = newAction(I18n.get("action.back"), newImageIcon("/org/jd/gui/images/backward_nav.png"), false, backwardActionListener);
+            forwardAction = newAction(I18n.get("action.forward"), newImageIcon("/org/jd/gui/images/forward_nav.png"), false, forwardActionListener);
+            Action searchAction = newAction(I18n.get("action.search"), newImageIcon("/org/jd/gui/images/search_src.png"), false, searchActionListener);
+            Action jdWebSiteAction = newAction(I18n.get("action.jdWebSite"), browser, I18n.get("action.jdWebSite.tip"), jdWebSiteActionListener);
+            Action jdGuiIssuesActionAction = newAction(I18n.get("action.jdGuiIssues"), browser, I18n.get("action.jdGuiIssues.tip"), jdGuiIssuesActionListener);
+            Action jdCoreIssuesActionAction = newAction(I18n.get("action.jdCoreIssues"), browser, I18n.get("action.jdCoreIssues.tip"), jdCoreIssuesActionListener);
+            Action preferencesAction = newAction(I18n.get("action.preferences"), newImageIcon("/org/jd/gui/images/preferences.png"), true, I18n.get("action.preferences.tip"), preferencesActionListener);
+            Action aboutAction = newAction(I18n.get("action.about"), true, I18n.get("action.about.tip"), aboutActionListener);
 
             // Menu //
             int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             JMenuBar menuBar = new JMenuBar();
-            JMenu menu = new JMenu("File");
+            JMenu menu = new JMenu(I18n.get("menu.file"));
             menuBar.add(menu);
             menu.add(openAction).setAccelerator(KeyStroke.getKeyStroke('O', menuShortcutKeyMask));
             menu.addSeparator();
@@ -210,7 +211,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
                 menu.addSeparator();
                 menu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_MASK));
             }
-            menu = new JMenu("Edit");
+            menu = new JMenu(I18n.get("menu.edit"));
             menuBar.add(menu);
             menu.add(copyAction).setAccelerator(KeyStroke.getKeyStroke('C', menuShortcutKeyMask));
             menu.add(pasteAction).setAccelerator(KeyStroke.getKeyStroke('V', menuShortcutKeyMask));
@@ -218,7 +219,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             menu.add(selectAllAction).setAccelerator(KeyStroke.getKeyStroke('A', menuShortcutKeyMask));
             menu.addSeparator();
             menu.add(findAction).setAccelerator(KeyStroke.getKeyStroke('F', menuShortcutKeyMask));
-            menu = new JMenu("Navigation");
+            menu = new JMenu(I18n.get("menu.navigation"));
             menuBar.add(menu);
             menu.add(openTypeAction).setAccelerator(KeyStroke.getKeyStroke('T', menuShortcutKeyMask));
             menu.add(openTypeHierarchyAction).setAccelerator(KeyStroke.getKeyStroke('H', menuShortcutKeyMask));
@@ -227,10 +228,10 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             menu.addSeparator();
             menu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_MASK));
             menu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_MASK));
-            menu = new JMenu("Search");
+            menu = new JMenu(I18n.get("menu.search"));
             menuBar.add(menu);
             menu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
-            menu = new JMenu("Help");
+            menu = new JMenu(I18n.get("menu.help"));
             menuBar.add(menu);
             if (browser) {
                 menu.add(jdWebSiteAction);
@@ -273,7 +274,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
                         invokeLater(() -> {
                             if (page == null) {
                                 // Update title
-                                mainFrame.setTitle("Java Decompiler");
+                                mainFrame.setTitle(I18n.get("app.title"));
                                 // Update menu
                                 saveAction.setEnabled(false);
                                 copyAction.setEnabled(false);
@@ -287,7 +288,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
                                 String path = page.getUri().getPath();
                                 int index = path.lastIndexOf('/');
                                 String name = (index == -1) ? path : path.substring(index + 1);
-                                mainFrame.setTitle((name != null) ? name + " - Java Decompiler" : "Java Decompiler");
+                                mainFrame.setTitle((name != null) ? name + " - " + I18n.get("app.title") : I18n.get("app.title"));
                                 // Update history
                                 history.add(page.getUri());
                                 // Update history actions

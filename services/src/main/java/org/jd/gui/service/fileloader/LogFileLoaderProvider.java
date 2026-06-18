@@ -8,6 +8,7 @@
 package org.jd.gui.service.fileloader;
 
 import org.jd.gui.api.API;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.io.TextReader;
 import org.jd.gui.view.component.LogPage;
 
@@ -17,7 +18,7 @@ public class LogFileLoaderProvider extends ZipFileLoaderProvider {
     protected static final String[] EXTENSIONS = { "log" };
 
     @Override public String[] getExtensions() { return EXTENSIONS; }
-    @Override public String getDescription() { return "Log files (*.log)"; }
+    @Override public String getDescription() { return I18n.get("fileLoader.log"); }
 
     @Override
     public boolean accept(API api, File file) {

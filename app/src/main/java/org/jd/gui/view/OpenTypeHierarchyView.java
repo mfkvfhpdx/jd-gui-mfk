@@ -12,6 +12,7 @@ import org.jd.gui.api.model.Container;
 import org.jd.gui.api.model.Indexes;
 import org.jd.gui.api.model.TreeNodeData;
 import org.jd.gui.api.model.Type;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.function.TriConsumer;
 import org.jd.gui.util.swing.SwingUtil;
@@ -49,7 +50,7 @@ public class OpenTypeHierarchyView {
         this.selectedTypeCallback = selectedTypeCallback;
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            openTypeHierarchyDialog = new JDialog(mainFrame, "Hierarchy Type", false);
+            openTypeHierarchyDialog = new JDialog(mainFrame, I18n.get("dialog.hierarchyType"), false);
 
             JPanel panel = new JPanel();
             panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -109,12 +110,12 @@ public class OpenTypeHierarchyView {
             Box hbox = Box.createHorizontalBox();
             vbox.add(hbox);
             hbox.add(Box.createHorizontalGlue());
-            JButton openTypeHierarchyOpenButton = new JButton("Open");
+            JButton openTypeHierarchyOpenButton = new JButton(I18n.get("button.open"));
             hbox.add(openTypeHierarchyOpenButton);
             openTypeHierarchyOpenButton.setEnabled(false);
             openTypeHierarchyOpenButton.addActionListener(e -> onTypeSelected());
             hbox.add(Box.createHorizontalStrut(5));
-            JButton openTypeHierarchyCancelButton = new JButton("Cancel");
+            JButton openTypeHierarchyCancelButton = new JButton(I18n.get("button.cancel"));
             hbox.add(openTypeHierarchyCancelButton);
             Action openTypeHierarchyCancelActionListener = new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent actionEvent) { openTypeHierarchyDialog.setVisible(false); }

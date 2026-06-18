@@ -7,6 +7,7 @@
 
 package org.jd.gui.view;
 
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.swing.SwingUtil;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class SaveAllSourcesView {
     public SaveAllSourcesView(JFrame mainFrame, Runnable cancelCallback) {
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            saveAllSourcesDialog = new JDialog(mainFrame, "Save All Sources", false);
+            saveAllSourcesDialog = new JDialog(mainFrame, I18n.get("dialog.saveAllSources"), false);
             saveAllSourcesDialog.setResizable(false);
             saveAllSourcesDialog.addWindowListener(new WindowAdapter() {
                 @Override public void windowClosing(WindowEvent e) {
@@ -51,7 +52,7 @@ public class SaveAllSourcesView {
             // Button "Cancel"
             hbox = Box.createHorizontalBox();
             hbox.add(Box.createHorizontalGlue());
-            JButton saveAllSourcesCancelButton = new JButton("Cancel");
+            JButton saveAllSourcesCancelButton = new JButton(I18n.get("button.cancel"));
             Action saveAllSourcesCancelActionListener = new AbstractAction() {
                 public void actionPerformed(ActionEvent actionEvent) {
                     cancelCallback.run();
@@ -76,7 +77,7 @@ public class SaveAllSourcesView {
     public void show(File file) {
         SwingUtil.invokeLater(() -> {
             // Init
-            saveAllSourcesLabel.setText("Saving '" + file.getAbsolutePath() + "'...");
+            saveAllSourcesLabel.setText(I18n.get("dialog.saveAllSources.progress", file.getAbsolutePath()));
             saveAllSourcesProgressBar.setValue(0);
             saveAllSourcesProgressBar.setMaximum(10);
             saveAllSourcesProgressBar.setIndeterminate(true);
@@ -114,7 +115,7 @@ public class SaveAllSourcesView {
 
     public void showActionFailedDialog() {
         SwingUtil.invokeLater(() -> {
-            JOptionPane.showMessageDialog(saveAllSourcesDialog, "'Save All Sources' action failed.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(saveAllSourcesDialog, I18n.get("dialog.saveAllSources.failed"), I18n.get("error.title"), JOptionPane.ERROR_MESSAGE);
         });
     }
 }

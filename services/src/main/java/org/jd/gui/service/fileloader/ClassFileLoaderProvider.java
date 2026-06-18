@@ -8,6 +8,7 @@
 package org.jd.gui.service.fileloader;
 
 import org.jd.gui.api.API;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.objectweb.asm.ClassReader;
 
@@ -20,7 +21,7 @@ public class ClassFileLoaderProvider extends AbstractTypeFileLoaderProvider {
     protected static final String[] EXTENSIONS = { "class" };
 
     @Override public String[] getExtensions() { return EXTENSIONS; }
-    @Override public String getDescription() { return "Class files (*.class)"; }
+    @Override public String getDescription() { return I18n.get("fileLoader.class"); }
 
     @Override
     public boolean accept(API api, File file) {

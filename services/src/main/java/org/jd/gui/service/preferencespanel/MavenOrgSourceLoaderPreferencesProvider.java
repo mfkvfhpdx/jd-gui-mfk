@@ -8,6 +8,7 @@
 package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.I18n;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -39,7 +40,7 @@ public class MavenOrgSourceLoaderPreferencesProvider extends JPanel implements P
     public MavenOrgSourceLoaderPreferencesProvider() {
         super(new BorderLayout());
 
-        enableCheckBox = new JCheckBox("Search source code on maven.org for:");
+        enableCheckBox = new JCheckBox(I18n.get("prefs.mavenSearch"));
         enableCheckBox.addActionListener(this);
 
         filtersTextArea = new JTextArea();
@@ -64,7 +65,7 @@ public class MavenOrgSourceLoaderPreferencesProvider extends JPanel implements P
             scrollPane.setPreferredSize(new Dimension(-1, 56));
         }
 
-        resetButton = new JButton("Reset");
+        resetButton = new JButton(I18n.get("button.reset"));
         resetButton.addActionListener(this);
 
         JPanel southPanel = new JPanel(new BorderLayout());
@@ -77,8 +78,8 @@ public class MavenOrgSourceLoaderPreferencesProvider extends JPanel implements P
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "Source loader"; }
-    @Override public String getPreferencesPanelTitle() { return "maven.org"; }
+    @Override public String getPreferencesGroupTitle() { return I18n.get("prefs.sourceLoader"); }
+    @Override public String getPreferencesPanelTitle() { return I18n.get("prefs.mavenOrg"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override

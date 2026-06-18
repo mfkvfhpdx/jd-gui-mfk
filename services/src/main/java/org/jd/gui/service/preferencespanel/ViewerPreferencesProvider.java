@@ -10,6 +10,7 @@ package org.jd.gui.service.preferencespanel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class ViewerPreferencesProvider extends JPanel implements PreferencesPane
     public ViewerPreferencesProvider() {
         super(new BorderLayout());
 
-        add(new JLabel("Font size (" + MIN_VALUE + ".." + MAX_VALUE + "): "), BorderLayout.WEST);
+        add(new JLabel(I18n.get("prefs.fontSize", MIN_VALUE, MAX_VALUE)), BorderLayout.WEST);
 
         fontSizeTextField = new JTextField();
         fontSizeTextField.getDocument().addDocumentListener(this);
@@ -42,8 +43,8 @@ public class ViewerPreferencesProvider extends JPanel implements PreferencesPane
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "Viewer"; }
-    @Override public String getPreferencesPanelTitle() { return "Appearance"; }
+    @Override public String getPreferencesGroupTitle() { return I18n.get("prefs.viewer"); }
+    @Override public String getPreferencesPanelTitle() { return I18n.get("prefs.appearance"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override public void init(Color errorBackgroundColor) {

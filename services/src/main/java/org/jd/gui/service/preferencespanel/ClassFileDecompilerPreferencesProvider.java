@@ -8,6 +8,7 @@
 package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.I18n;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,16 +25,16 @@ public class ClassFileDecompilerPreferencesProvider extends JPanel implements Pr
     public ClassFileDecompilerPreferencesProvider() {
         super(new GridLayout(0,1));
 
-        escapeUnicodeCharactersCheckBox = new JCheckBox("Escape unicode characters");
-        realignLineNumbersCheckBox = new JCheckBox("Realign line numbers");
+        escapeUnicodeCharactersCheckBox = new JCheckBox(I18n.get("prefs.escapeUnicode"));
+        realignLineNumbersCheckBox = new JCheckBox(I18n.get("prefs.realignLineNumbers"));
 
         add(escapeUnicodeCharactersCheckBox);
         add(realignLineNumbersCheckBox);
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "Decompiler"; }
-    @Override public String getPreferencesPanelTitle() { return "Class file"; }
+    @Override public String getPreferencesGroupTitle() { return I18n.get("prefs.decompiler"); }
+    @Override public String getPreferencesPanelTitle() { return I18n.get("prefs.classFile"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override public void init(Color errorBackgroundColor) {}

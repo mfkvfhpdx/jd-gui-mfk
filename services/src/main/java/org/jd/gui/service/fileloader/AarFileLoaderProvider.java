@@ -9,13 +9,15 @@ package org.jd.gui.service.fileloader;
 
 import org.jd.gui.api.API;
 
+import org.jd.gui.util.I18n;
+
 import java.io.File;
 
 public class AarFileLoaderProvider extends ZipFileLoaderProvider {
     protected static final String[] EXTENSIONS = { "aar" };
 
     @Override public String[] getExtensions() { return EXTENSIONS; }
-    @Override public String getDescription() { return "Android archive files (*.aar)"; }
+    @Override public String getDescription() { return I18n.get("fileLoader.aar"); }
 
     @Override
     public boolean accept(API api, File file) {

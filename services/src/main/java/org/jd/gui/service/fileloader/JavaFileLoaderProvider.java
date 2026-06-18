@@ -8,6 +8,7 @@
 package org.jd.gui.service.fileloader;
 
 import org.jd.gui.api.API;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.io.TextReader;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class JavaFileLoaderProvider extends AbstractTypeFileLoaderProvider {
     protected static final String[] EXTENSIONS = { "java" };
 
     @Override public String[] getExtensions() { return EXTENSIONS; }
-    @Override public String getDescription() { return "Java files (*.java)"; }
+    @Override public String getDescription() { return I18n.get("fileLoader.java"); }
 
     @Override
     public boolean accept(API api, File file) {

@@ -9,13 +9,15 @@ package org.jd.gui.service.fileloader;
 
 import org.jd.gui.api.API;
 
+import org.jd.gui.util.I18n;
+
 import java.io.File;
 
 public class JavaModuleFileLoaderProvider extends ZipFileLoaderProvider {
     protected static final String[] EXTENSIONS = { "jmod" };
 
     @Override public String[] getExtensions() { return EXTENSIONS; }
-    @Override public String getDescription() { return "Java module files (*.jmod)"; }
+    @Override public String getDescription() { return I18n.get("fileLoader.jmod"); }
 
     @Override
     public boolean accept(API api, File file) {

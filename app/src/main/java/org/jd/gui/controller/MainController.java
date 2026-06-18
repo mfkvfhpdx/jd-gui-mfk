@@ -27,6 +27,7 @@ import org.jd.gui.service.treenode.TreeNodeFactoryService;
 import org.jd.gui.service.type.TypeFactoryService;
 import org.jd.gui.service.uriloader.UriLoaderService;
 import org.jd.gui.spi.*;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.net.UriUtil;
 import org.jd.gui.util.swing.SwingUtil;
@@ -186,7 +187,7 @@ public class MainController implements API {
         JFileChooser chooser = new JFileChooser();
 
         chooser.removeChoosableFileFilter(chooser.getFileFilter());
-        chooser.addChoosableFileFilter(new FileNameExtensionFilter("All files (" + description + ")", array));
+        chooser.addChoosableFileFilter(new FileNameExtensionFilter(I18n.get("file.allFiles", description), array));
 
         for (String extension : extensions) {
             FileLoader loader = loaders.get(extension);
@@ -218,8 +219,8 @@ public class MainController implements API {
                 configuration.setRecentSaveDirectory(chooser.getCurrentDirectory());
 
                 if (selectedFile.exists()) {
-                    String title = "Are you sure?";
-                    String message = "The file '" + selectedFile.getAbsolutePath() + "' already isContainsIn.\n Do you want to replace the existing file?";
+                    String title = I18n.get("confirm.title");
+                    String message = I18n.get("confirm.replaceFile", selectedFile.getAbsolutePath());
 
                     if (JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         save(selectedFile);
@@ -256,8 +257,8 @@ public class MainController implements API {
                     configuration.setRecentSaveDirectory(chooser.getCurrentDirectory());
 
                     if (selectedFile.exists()) {
-                        String title = "Are you sure?";
-                        String message = "The file '" + selectedFile.getAbsolutePath() + "' already isContainsIn.\n Do you want to replace the existing file?";
+                        String title = I18n.get("confirm.title");
+                        String message = I18n.get("confirm.replaceFile", selectedFile.getAbsolutePath());
 
                         if (JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                             saveAllSourcesController.show(executor, sourcesSavable, selectedFile);
@@ -443,10 +444,10 @@ public class MainController implements API {
             if (file.exists()) {
                 FileLoader loader = getFileLoader(file);
                 if ((loader != null) && !loader.accept(this, file)) {
-                    errors.add("Invalid input fileloader: '" + file.getAbsolutePath() + "'");
+                    errors.add(I18n.get("error.invalidFile", file.getAbsolutePath()));
                 }
             } else {
-                errors.add("File not found: '" + file.getAbsolutePath() + "'");
+                errors.add(I18n.get("error.fileNotFound", file.getAbsolutePath()));
             }
         }
 
@@ -473,7 +474,7 @@ public class MainController implements API {
                 index++;
             }
 
-            JOptionPane.showMessageDialog(mainView.getMainFrame(), messages.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(mainView.getMainFrame(), messages.toString(), I18n.get("error.title"), JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -12,6 +12,7 @@ import org.jd.gui.api.model.Container;
 import org.jd.gui.api.model.Type;
 import org.jd.gui.spi.ContextualActionsFactory;
 import org.jd.gui.spi.TypeFactory;
+import org.jd.gui.util.I18n;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ public class CopyQualifiedNameContextualActionsFactory implements ContextualActi
             this.fragment = fragment;
 
             putValue(GROUP_NAME, "Edit > CutCopyPaste");
-            putValue(NAME, "Copy Qualified Name");
+            putValue(NAME, I18n.get("action.copyQualifiedName"));
             putValue(SMALL_ICON, ICON);
         }
 

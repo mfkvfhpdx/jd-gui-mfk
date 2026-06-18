@@ -8,6 +8,7 @@
 package org.jd.gui.service.preferencespanel;
 
 import org.jd.gui.spi.PreferencesPanel;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.exception.ExceptionUtil;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class DirectoryIndexerPreferencesProvider extends JPanel implements Prefe
     public DirectoryIndexerPreferencesProvider() {
         super(new BorderLayout());
 
-        add(new JLabel("Maximum depth (1.." + MAX_VALUE + "): "), BorderLayout.WEST);
+        add(new JLabel(I18n.get("prefs.maxDepth", MAX_VALUE)), BorderLayout.WEST);
 
         maximumDepthTextField = new JTextField();
         maximumDepthTextField.getDocument().addDocumentListener(this);
@@ -38,8 +39,8 @@ public class DirectoryIndexerPreferencesProvider extends JPanel implements Prefe
     }
 
     // --- PreferencesPanel --- //
-    @Override public String getPreferencesGroupTitle() { return "Indexer"; }
-    @Override public String getPreferencesPanelTitle() { return "Directory exploration"; }
+    @Override public String getPreferencesGroupTitle() { return I18n.get("prefs.indexer"); }
+    @Override public String getPreferencesPanelTitle() { return I18n.get("prefs.directoryExploration"); }
     @Override public JComponent getPanel() { return this; }
 
     @Override public void init(Color errorBackgroundColor) {

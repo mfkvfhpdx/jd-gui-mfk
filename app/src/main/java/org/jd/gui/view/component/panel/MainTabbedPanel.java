@@ -10,6 +10,7 @@ package org.jd.gui.view.component.panel;
 import org.jd.gui.api.API;
 import org.jd.gui.api.feature.*;
 import org.jd.gui.service.platform.PlatformService;
+import org.jd.gui.util.I18n;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,13 +53,13 @@ public class MainTabbedPanel<T extends JComponent & UriGettable> extends TabbedP
         box.setBackground(panel.getBackground());
         box.add(Box.createVerticalGlue());
 
-        JLabel title = newLabel("No files are open", fontColor);
+        JLabel title = newLabel(I18n.get("empty.noFiles"), fontColor);
         title.setFont(title.getFont().deriveFont(Font.BOLD, title.getFont().getSize()+8));
 
         box.add(title);
-        box.add(newLabel("Open a file with menu \"File > Open File...\"", fontColor));
-        box.add(newLabel("Open recent files with menu \"File > Recent Files\"", fontColor));
-        box.add(newLabel("Drag and drop files from " + getFileManagerLabel(), fontColor));
+        box.add(newLabel(I18n.get("empty.openFileHint"), fontColor));
+        box.add(newLabel(I18n.get("empty.recentFilesHint"), fontColor));
+        box.add(newLabel(I18n.get("empty.dragDropHint", getFileManagerLabel()), fontColor));
         box.add(Box.createVerticalGlue());
 
         panel.add(box);
@@ -101,11 +102,11 @@ public class MainTabbedPanel<T extends JComponent & UriGettable> extends TabbedP
 	protected String getFileManagerLabel() {
         switch (PlatformService.getInstance().getOs()) {
             case Linux:
-                return "your file manager";
+                return I18n.get("fileManager.linux");
             case MacOSX:
-                return "the Finder";
+                return I18n.get("fileManager.mac");
             default:
-                return "Explorer";
+                return I18n.get("fileManager.windows");
         }
     }
 

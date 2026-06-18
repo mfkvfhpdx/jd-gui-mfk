@@ -11,6 +11,7 @@ import org.jd.gui.api.API;
 import org.jd.gui.api.feature.ContainerEntryGettable;
 import org.jd.gui.api.feature.PreferencesChangeListener;
 import org.jd.gui.api.feature.UriGettable;
+import org.jd.gui.util.I18n;
 import org.jd.gui.service.platform.PlatformService;
 
 import javax.swing.*;
@@ -82,7 +83,7 @@ public class TabbedPanel<T extends JComponent & UriGettable> extends JPanel impl
     public void addPage(String title, Icon icon, String tip, T page) {
         // Add a new tab
         JLabel tabCloseButton = new JLabel(CLOSE_ICON);
-        tabCloseButton.setToolTipText("Close this panel");
+        tabCloseButton.setToolTipText(I18n.get("tab.closePanel.tip"));
         tabCloseButton.addMouseListener(new MouseListener() {
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
@@ -143,22 +144,22 @@ public class TabbedPanel<T extends JComponent & UriGettable> extends JPanel impl
     protected class PopupTabMenu extends JPopupMenu {
         public PopupTabMenu(Component component) {
             // Add default popup menu entries
-            JMenuItem menuItem = new JMenuItem("Close", null);
+            JMenuItem menuItem = new JMenuItem(I18n.get("tab.close"), null);
             menuItem.addActionListener(e -> removeComponent(component));
             add(menuItem);
 
-            menuItem = new JMenuItem("Close Others", null);
+            menuItem = new JMenuItem(I18n.get("tab.closeOthers"), null);
             menuItem.addActionListener(e -> removeOtherComponents(component));
             add(menuItem);
 
-            menuItem = new JMenuItem("Close All", null);
+            menuItem = new JMenuItem(I18n.get("tab.closeAll"), null);
             menuItem.addActionListener(e -> removeAllComponents());
             add(menuItem);
 
             // Add "Select Tab" popup menu entry
             if ((tabbedPane.getTabCount() > 1) && (PlatformService.getInstance().isMac() || "true".equals(preferences.get(TAB_LAYOUT)))) {
                 addSeparator();
-                JMenu menu = new JMenu("Select Tab");
+                JMenu menu = new JMenu(I18n.get("dialog.selectTab"));
                 int count = tabbedPane.getTabCount();
 
                 for (int i = 0; i < count; i++) {

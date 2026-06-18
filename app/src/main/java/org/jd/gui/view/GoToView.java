@@ -9,6 +9,7 @@ package org.jd.gui.view;
 
 import org.jd.gui.api.feature.LineNumberNavigable;
 import org.jd.gui.model.configuration.Configuration;
+import org.jd.gui.util.I18n;
 import org.jd.gui.util.swing.SwingUtil;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class GoToView {
     public GoToView(Configuration configuration, JFrame mainFrame) {
         // Build GUI
         SwingUtil.invokeLater(() -> {
-            goToDialog = new JDialog(mainFrame, "Go to Line", false);
+            goToDialog = new JDialog(mainFrame, I18n.get("dialog.goToLine"), false);
             goToDialog.setResizable(false);
 
             Box vbox = Box.createVerticalBox();
@@ -70,7 +71,7 @@ public class GoToView {
             // Buttons "Ok" and "Cancel"
             hbox = Box.createHorizontalBox();
             hbox.add(Box.createHorizontalGlue());
-            JButton goToOkButton = new JButton("   Ok   ");
+            JButton goToOkButton = new JButton(I18n.get("button.ok"));
             hbox.add(goToOkButton);
             goToOkButton.setEnabled(false);
             goToOkButton.addActionListener(e -> {
@@ -78,7 +79,7 @@ public class GoToView {
                 goToDialog.setVisible(false);
             });
             hbox.add(Box.createHorizontalStrut(5));
-            JButton goToCancelButton = new JButton("Cancel");
+            JButton goToCancelButton = new JButton(I18n.get("button.cancel"));
             hbox.add(goToCancelButton);
             Action goToCancelActionListener = new AbstractAction() {
                 public void actionPerformed(ActionEvent actionEvent) { goToDialog.setVisible(false); }
@@ -115,17 +116,17 @@ public class GoToView {
 
                             if (lineNumber > navigator.getMaximumLineNumber()) {
                                 goToOkButton.setEnabled(false);
-                                showErrorMessage("Line number out of range");
+                                showErrorMessage(I18n.get("error.lineOutOfRange"));
                             } else if (navigator.checkLineNumber(lineNumber)) {
                                 goToOkButton.setEnabled(true);
                                 clearErrorMessage();
                             } else {
                                 goToOkButton.setEnabled(false);
-                                showErrorMessage("Line number not found");
+                                showErrorMessage(I18n.get("error.lineNotFound"));
                             }
                         } catch (NumberFormatException e) {
                             goToOkButton.setEnabled(false);
-                            showErrorMessage("Not a number");
+                            showErrorMessage(I18n.get("error.notANumber"));
                         }
                     }
                 }
@@ -153,7 +154,7 @@ public class GoToView {
 
         SwingUtil.invokeLater(() -> {
             // Init
-            goToEnterLineNumberLabel.setText("Enter line number (1.." + navigator.getMaximumLineNumber() + "):");
+            goToEnterLineNumberLabel.setText(I18n.get("dialog.goToLine.prompt", navigator.getMaximumLineNumber()));
             goToEnterLineNumberTextField.setText("");
             // Show
             goToDialog.setVisible(true);
